@@ -11,11 +11,12 @@
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <!-- Navigation Links -->
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('welcome') ? 'active' : '' }}"
+                        href="{{ route('welcome') }}">{{ __('Home') }}</a>
+                </li>
+
                 <x-authenticated-content>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}"
-                            href="{{ route('dashboard') }}">{{ __('Dashboard') }}</a>
-                    </li>
 
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('posts') ? 'active' : '' }}"
