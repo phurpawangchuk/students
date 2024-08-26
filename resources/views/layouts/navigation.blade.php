@@ -16,17 +16,6 @@
                         href="{{ route('welcome') }}">{{ __('Home') }}</a>
                 </li>
 
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('welcome') ? 'active' : '' }}"
-                        href="{{ route('welcome') }}">{{ __('55') }}</a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('welcome') ? 'active' : '' }}"
-                        href="{{ route('welcome') }}">{{ __('66') }}</a>
-                </li>
-
-
                 <x-authenticated-content>
 
                     <li class="nav-item">
