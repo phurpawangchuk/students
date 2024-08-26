@@ -18,7 +18,7 @@
 
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('welcome') ? 'active' : '' }}"
-                        href="{{ route('welcome') }}">{{ __('Todo') }}</a>
+                        href="{{ route('welcome') }}">{{ __('Todo Task') }}</a>
                 </li>
                 <x-authenticated-content>
 
