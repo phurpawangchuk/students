@@ -39,7 +39,7 @@ jobs:
 
     - name: SSH into EC2 and build the project
       run: |
-        ssh -i $EC2_KEY_PATH -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST << 'EOF'
+        ssh -i $EC2_KEY_PATH -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST << EOF
           cd $APP_DIRECTORY
           npm run build
         EOF
