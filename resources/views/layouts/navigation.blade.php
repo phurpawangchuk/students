@@ -18,12 +18,12 @@
 
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('welcome') ? 'active' : '' }}"
-                        href="{{ route('welcome') }}">{{ __('Todo') }}</a>
+                        href="{{ route('welcome') }}">{{ __('Todo33') }}</a>
                 </li>
 
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('welcome') ? 'active' : '' }}"
-                        href="{{ route('welcome') }}">{{ __('Todo1') }}</a>
+                        href="{{ route('welcome') }}">{{ __('Todo133') }}</a>
                 </li>
 
 
