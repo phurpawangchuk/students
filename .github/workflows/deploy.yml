@@ -38,7 +38,7 @@ jobs:
     - name: SSH into EC2 and run deployment scripts
       run: |
         ssh -i $EC2_KEY_PATH -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST \
-          "sudo rsync -avz --no-perms --no-times --exclude=node_modules --exclude=.git --exclude=vendor /home/$EC2_USER/app/ /var/www/html/students/"
+          "sudo rsync -avz --no-perms --no-times --exclude=node_modules --exclude=.git --exclude=vendor /var/www/html/students/"
         cd $APP_DIRECTORY
         npm run build
         EOF
