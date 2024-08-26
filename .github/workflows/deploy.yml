@@ -13,6 +13,11 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 'node'  # This will use the latest LTS version of Node.js
+
     - name: Install dependencies
       run: npm install
 
@@ -35,7 +40,6 @@ jobs:
         # SSH into the EC2 instance and restart services (e.g., Apache, Nginx, PM2)
         ssh -i private_key.pem $EC2_USER@$EC2_HOST << 'EOF'
           cd $APP_DIRECTORY
-          npm install --production
           npm run build  # If needed
 
           # If using Nginx or Apache, you might restart it like this:
