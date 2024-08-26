@@ -6,15 +6,12 @@ on:
       - main  # Trigger deployment only on push to the main branch
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
-
-    - name: Build application
-      run: npm run build
 
     - name: Deploy to EC2
       env:
