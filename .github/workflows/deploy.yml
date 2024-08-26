@@ -29,7 +29,7 @@ jobs:
         # SSH into the EC2 instance and restart services (e.g., Apache, Nginx, PM2)
         ssh -i private_key.pem $EC2_USER@$EC2_HOST << 'EOF'
           cd $APP_DIRECTORY
-          #npm run build  # If needed
+          npm run build  # If needed
 
           # If using Nginx or Apache, you might restart it like this:
           # sudo systemctl restart apache2
