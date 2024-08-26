@@ -17,7 +17,7 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: '20.17'
-
+        
     - name: Deploy to EC2
       env:
         EC2_HOST: ${{ secrets.EC2_HOST }}
@@ -28,7 +28,6 @@ jobs:
         echo "EC2_HOST: $EC2_HOST"
         echo "EC2_USER: $EC2_USER"
         echo "APP_DIRECTORY: $APP_DIRECTORY"
-
         echo "$EC2_KEY" > private_key.pem
         chmod 600 private_key.pem
 
