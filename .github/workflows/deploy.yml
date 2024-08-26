@@ -13,14 +13,6 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: 'node'  # This will use the latest LTS version of Node.js
-
-    - name: Install dependencies
-      run: npm install
-
     - name: Build application
       run: npm run build
 
