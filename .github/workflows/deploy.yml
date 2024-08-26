@@ -32,7 +32,7 @@ jobs:
     - name: Copy files to EC2
       run: |
         rsync -avz --no-perms --no-times -e "ssh -i $EC2_KEY_PATH -o StrictHostKeyChecking=no" \
-              --exclude 'vendor/' --exclude 'tests/' --exclude 'node_modules/' --exclude '.github/workflows/' --exclude '.git/' \
+              --rsync-path="sudo rsync" --exclude 'vendor/' --exclude 'tests/' --exclude 'node_modules/' --exclude '.git/' \
               . $EC2_USER@$EC2_HOST:$APP_DIRECTORY
 
     - name: SSH into EC2 and run deployment scripts
