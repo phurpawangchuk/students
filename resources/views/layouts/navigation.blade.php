@@ -22,6 +22,11 @@
                 </li>
 
 
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('welcome') ? 'active' : '' }}"
+                        href="{{ route('welcome') }}">{{ __('New 123') }}</a>
+                </li>
+
                 <x-authenticated-content>
 
                     <li class="nav-item">
