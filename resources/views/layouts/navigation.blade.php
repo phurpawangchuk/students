@@ -18,7 +18,7 @@
 
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('welcome') ? 'active' : '' }}"
-                        href="{{ route('welcome') }}">{{ __('Todo1133') }}</a>
+                        href="{{ route('welcome') }}">{{ __('Todo11334555') }}</a>
                 </li>
 
 
@@ -31,7 +31,7 @@
 
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('posts') ? 'active' : '' }}"
-                            href="{{ url('posts') }}">{{ __('Post') }}</a>
+                            href="{{ url('posts') }}">{{ __('Post55') }}</a>
                     </li>
 
                     <li class="nav-item">
