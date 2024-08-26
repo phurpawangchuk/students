@@ -1,5 +1,5 @@
 <x-guest-layout>
-    <div class="card-body p-4 p-sm-5">
+    <div class="card-body">
         <!-- Session Status -->
         <x-auth-session-status class="mb-4" :status="session('status')" />
 
