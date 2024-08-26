@@ -3,11 +3,17 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - main  # Trigger deployment only on push to the main branch
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    env:
+      EC2_HOST: ${{ secrets.EC2_HOST }}
+      EC2_USER: ubuntu
+      EC2_KEY_PATH: /tmp/ec2_key.pem
+      APP_DIRECTORY: /var/www/html/students
 
     steps:
     - name: Checkout code
@@ -17,31 +23,22 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: '20.17'
-        
-    - name: Deploy to EC2
-      env:
-        EC2_HOST: ${{ secrets.EC2_HOST }}
-        EC2_USER: ${{ secrets.EC2_USER }}
-        EC2_KEY: ${{ secrets.EC2_KEY }}
-        APP_DIRECTORY: ${{ secrets.APP_DIRECTORY }}
+    
+    - name: Create SSH key file
       run: |
-        echo "EC2_HOST: $EC2_HOST"
-        echo "EC2_USER: $EC2_USER"
-        echo "APP_DIRECTORY: $APP_DIRECTORY"
-        echo "$EC2_KEY" > private_key.pem
-        chmod 600 private_key.pem
+        echo "${{ secrets.EC2_KEY }}" > $EC2_KEY_PATH
+        chmod 400 $EC2_KEY_PATH
 
-        # Sync application files to EC2 instance
-        rsync -avz -e "ssh -i private_key.pem" --exclude 'node_modules' --exclude '.git' ./ $EC2_USER@$EC2_HOST:$APP_DIRECTORY
-
-        # SSH into the EC2 instance and restart services (e.g., Apache, Nginx, PM2)
-        ssh -i private_key.pem $EC2_USER@$EC2_HOST << 'EOF'
-          cd $APP_DIRECTORY
-          npm run build  # If needed
-
-          # If using Nginx or Apache, you might restart it like this:
-          # sudo systemctl restart apache2
+    - name: Copy files to EC2
+      run: |
+        rsync -avz -e "ssh -i $EC2_KEY_PATH -o StrictHostKeyChecking=no" --exclude 'node_modules/' --exclude '.git/' . $EC2_USER@$EC2_HOST:$APP_DIRECTORY
+    
+    - name: SSH into EC2 and run deployment scripts
+      run: |
+        ssh -i $EC2_KEY_PATH -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST << 'EOF'
+        cd $APP_DIRECTORY
+        npm run build
         EOF
 
     - name: Clean up
-      run: rm -f private_key.pem
+      run: rm -f $EC2_KEY_PATH
