@@ -18,20 +18,14 @@
 
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('welcome') ? 'active' : '' }}"
-                        href="{{ route('welcome') }}">{{ __('Todo11334555') }}</a>
-                </li>
-
-
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('welcome') ? 'active' : '' }}"
-                        href="{{ route('welcome') }}">{{ __('New1133') }}</a>
+                        href="{{ route('welcome') }}">{{ __('Todo') }}</a>
                 </li>
 
                 <x-authenticated-content>
 
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('posts') ? 'active' : '' }}"
-                            href="{{ url('posts') }}">{{ __('Post55') }}</a>
+                            href="{{ url('posts') }}">{{ __('Post') }}</a>
                     </li>
 
                     <li class="nav-item">
