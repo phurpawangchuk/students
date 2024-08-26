@@ -32,14 +32,14 @@ jobs:
     - name: Copy files to EC2
       run: |
         rsync -avz --no-perms --no-times -e "ssh -i $EC2_KEY_PATH -o StrictHostKeyChecking=no" \
-              --rsync-path="sudo rsync" --exclude 'vendor/' --exclude 'tests/' --exclude 'node_modules/' --exclude=storage/framework/views/ --exclude '.git/' \
+              --rsync-path="sudo rsync" --exclude 'vendor/' --exclude 'public/build' --exclude 'tests/' --exclude 'node_modules/' --exclude=storage/ --exclude '.git/' \
               . $EC2_USER@$EC2_HOST:$APP_DIRECTORY
 
     - name: SSH into EC2 and run deployment scripts
       run: |
         ssh -i $EC2_KEY_PATH -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST \
           "sudo rsync -avz --no-perms --no-times --exclude=node_modules --exclude=tests \
-               --exclude=.git --exclude=storage/framework/views/ --exclude=vendor /var/www/html/students/"
+               --exclude=.git --exclude=storage --exclude=public/build --exclude=vendor /var/www/html/students/"
         cd $APP_DIRECTORY
         npm run build
         EOF
