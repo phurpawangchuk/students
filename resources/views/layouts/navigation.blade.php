@@ -1,3 +1,4 @@
+@extends('layouts.header')
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom">
     <div class="container-fluid">
         <!-- Toggle button for mobile view -->

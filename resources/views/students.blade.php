@@ -1,7 +1,7 @@
 <div class="container mt-4">
     <div class="card shadow rounded-lg bg-white">
         <div class="card-body">
-            <table class="table-responsive">
+            <table class="table table-bordered">
                 <thead>
                     <tr>
                         <th class="text-center">Course Code</th>
