@@ -1,0 +1,55 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main  # Trigger deployment only on push to the main branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18.x'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run tests
+      run: npm test
+
+    - name: Build application
+      run: npm run build
+
+    - name: Deploy to EC2
+      env:
+        EC2_HOST: ${{ secrets.EC2_HOST }}
+        EC2_USER: ${{ secrets.EC2_USER }}
+        EC2_KEY: ${{ secrets.EC2_KEY }}
+        APP_DIRECTORY: ${{ secrets.APP_DIRECTORY }}
+      run: |
+        echo "$EC2_KEY" > private_key.pem
+        chmod 600 private_key.pem
+
+        # Sync application files to EC2 instance
+        rsync -avz -e "ssh -i private_key.pem" --exclude 'node_modules' --exclude '.git' ./ $EC2_USER@$EC2_HOST:$APP_DIRECTORY
+
+        # SSH into the EC2 instance and restart services (e.g., Apache, Nginx, PM2)
+        ssh -i private_key.pem $EC2_USER@$EC2_HOST << 'EOF'
+          cd $APP_DIRECTORY
+          npm install --production
+          npm run build  # If needed
+
+          # If using Nginx or Apache, you might restart it like this:
+          # sudo systemctl restart nginx
+          sudo systemctl restart apache2
+        EOF
+
+    - name: Clean up
+      run: rm -f private_key.pem
