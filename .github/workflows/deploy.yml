@@ -30,15 +30,15 @@ jobs:
         echo "$EC2_KEY" > $EC2_KEY_PATH
         chmod 400 $EC2_KEY_PATH
 
-    # - name: Install dependencies
-    #   run: |
-    #     composer update
-    #     composer install --no-dev --optimize-autoloader
+    - name: Install dependencies
+      run: |
+        composer update
+        composer install --no-dev --optimize-autoloader
 
     - name: Copy files to EC2
       run: |
         rsync -avz --no-perms --no-times -e "ssh -i $EC2_KEY_PATH -o StrictHostKeyChecking=no" \
-              --rsync-path="sudo rsync" --exclude 'public/build' --exclude 'tests/' --exclude 'node_modules/' --exclude=storage/ --exclude '.git/' \
+              --rsync-path="sudo rsync" --exclude 'public/build' --exclude 'vendor' --exclude 'tests/' --exclude 'node_modules/' --exclude=storage/ --exclude '.git/' \
               . $EC2_USER@$EC2_HOST:$APP_DIRECTORY
 
     - name: Set correct file ownership on EC2
