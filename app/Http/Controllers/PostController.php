@@ -40,21 +40,11 @@ public function store(Request $request)
     $post->user_id = Auth::id(); 
 
     if ($request->hasFile('image')) {
-        // $file = $request->file('image');
-        // $filename = time() . '.' . $file->getClientOriginalExtension();
-        // $file->storeAs('public/images', $filename); // Store file in the 'public/images' directory
-        // $post->image = $filename; // Save the filename to the database
-
-        //  // Store the file - s3
-        // $path = $request->file('image')->store('uploads', 's3');
-        // $url = Storage::disk('s3')->url($path);
-
         $file = $request->file('image');
         $filename = time() . '.' . $file->getClientOriginalExtension();
         $file->storeAs('public/images', $filename); 
         // Store the file on S3 with the custom filename
         $path = $file->storeAs('uploads', $filename, 's3');
-        dd($path);
         $url = Storage::disk('s3')->url($path);
 
         $post->image = $filename;
@@ -101,14 +91,23 @@ public function store(Request $request)
         if ($request->hasFile('image')) {
             if ($post->image) {
                 Storage::disk('public')->delete($post->image);
+                Storage::disk('s3')->delete('uploads/'+$post->image);
+                
             }
-            $imagePath = $request->file('image')->store('images', 'public');
+            $filename = $request->file('image')->store('images', 'public');
+            
+            $file = $request->file('image');
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+            $path = $file->storeAs('uploads', $filename, 's3');
+            $url = Storage::disk('s3')->url($path);
+
+            $post->image = $filename;
         }
 
         $post->update([
             'title' => $request->input('title'),
             'content' => $request->input('content'),
-            'image' => $imagePath,
+            'image' => $filename,
         ]);
 
         return redirect()->route('posts.index')->with('success', 'Post updated successfully.');
@@ -119,7 +118,7 @@ public function store(Request $request)
          $this->authorize('update', $post);
         if ($post->image) {
             Storage::disk('public')->delete($post->image);
-            Storage::disk('s3')->delete('uploads/'+$post->image);
+           // Storage::disk('s3')->delete('uploads/'+$post->image);
         }
         $post->delete();
 
