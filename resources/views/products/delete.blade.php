@@ -1,3 +1,4 @@
+@foreach ($products as $product)
 @if(isset($product))
 <x-modal modalId="deleteProductModal{{ $product->id }}" modalTitle="Confirm Delete">
     <p>Are you sure you want to delete <strong>{{ $product->name }}</strong>?</p>
@@ -11,3 +12,4 @@
 @else
 <p class="mx-3">No product data available.</p>
 @endif
+@endforeach

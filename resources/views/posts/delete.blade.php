@@ -1,3 +1,4 @@
+@foreach ($posts as $post)
 @if(isset($post))
 <x-modal modalId="deletePostModal{{ $post->id }}" modalTitle="Confirm Delete">
     <p>Are you sure you want to delete <strong>{{ $post->name }}</strong>?</p>
@@ -12,3 +13,4 @@
 @else
 <p class="mx-3">No post data available.</p>
 @endif
+@endforeach
