@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
-
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
@@ -41,10 +40,23 @@ public function store(Request $request)
     $post->user_id = Auth::id(); 
 
     if ($request->hasFile('image')) {
+        // $file = $request->file('image');
+        // $filename = time() . '.' . $file->getClientOriginalExtension();
+        // $file->storeAs('public/images', $filename); // Store file in the 'public/images' directory
+        // $post->image = $filename; // Save the filename to the database
+
+        //  // Store the file - s3
+        // $path = $request->file('image')->store('uploads', 's3');
+        // $url = Storage::disk('s3')->url($path);
+
         $file = $request->file('image');
         $filename = time() . '.' . $file->getClientOriginalExtension();
-        $file->storeAs('public/images', $filename); // Store file in the 'public/images' directory
-        $post->image = $filename; // Save the filename to the database
+        $file->storeAs('public/images', $filename); 
+        // Store the file on S3 with the custom filename
+        $path = $file->storeAs('uploads', $filename, 's3');
+        $url = Storage::disk('s3')->url($path);
+
+        $post->image = $filename;
     }
 
     $post->save();
@@ -106,6 +118,7 @@ public function store(Request $request)
          $this->authorize('update', $post);
         if ($post->image) {
             Storage::disk('public')->delete($post->image);
+            Storage::disk('s3')->delete('uploads/'+$post->image);
         }
         $post->delete();
 
