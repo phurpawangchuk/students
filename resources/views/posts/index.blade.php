@@ -40,9 +40,6 @@
                         <!-- <img src="{{ asset('storage/' . $post->image) }}" alt="Post Image" width="100"> -->
                         <img src="https://posts3image.s3.amazonaws.com/uploads/{{$post->image}}" alt="Post Image"
                             width="100">
-                        <!-- <img src="{{ Storage::disk('s3')->url('uploads/' . $post->image) }}" alt="Post Image"
-                            width="100"> -->
-
                         @endif
                     </td>
 
