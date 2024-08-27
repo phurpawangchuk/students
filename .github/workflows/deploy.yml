@@ -30,6 +30,10 @@ jobs:
         echo "$EC2_KEY" > $EC2_KEY_PATH
         chmod 400 $EC2_KEY_PATH
 
+    - name: Install dependencies
+      run: |
+        composer install --no-dev --optimize-autoloader
+
     - name: Copy files to EC2
       run: |
         rsync -avz --no-perms --no-times -e "ssh -i $EC2_KEY_PATH -o StrictHostKeyChecking=no" \
