@@ -17,9 +17,9 @@ class PostController extends Controller
     public function index()
     {
         $posts = Post::all();
-        return view('posts.index', compact('posts'));
+        return view('posts.index', compact('posts'))->layout('layouts.app');
     }
-
+    
     public function create()
     {
         return view('posts.create');
@@ -44,8 +44,8 @@ public function store(Request $request)
         $filename = time() . '.' . $file->getClientOriginalExtension();
         $file->storeAs('public/images', $filename); 
         // Store the file on S3 with the custom filename
-        $path = $file->storeAs('uploads', $filename, 's3');
-        $url = Storage::disk('s3')->url($path);
+        // $path = $file->storeAs('uploads', $filename, 's3');
+        // $url = Storage::disk('s3')->url($path);
 
         $post->image = $filename;
     }
@@ -91,23 +91,23 @@ public function store(Request $request)
         if ($request->hasFile('image')) {
             if ($post->image) {
                 Storage::disk('public')->delete($post->image);
-                Storage::disk('s3')->delete('uploads/'+$post->image);
-                
+                // Storage::disk('s3')->delete('uploads/'+$post->image);
             }
             $filename = $request->file('image')->store('images', 'public');
             
             $file = $request->file('image');
             $filename = time() . '.' . $file->getClientOriginalExtension();
-            $path = $file->storeAs('uploads', $filename, 's3');
-            $url = Storage::disk('s3')->url($path);
+            // $path = $file->storeAs('uploads', $filename, 's3');
+            // $url = Storage::disk('s3')->url($path);
 
-            $post->image = $filename;
+            $imagePath = $filename;
+            $post->image = $imagePath;
         }
 
         $post->update([
             'title' => $request->input('title'),
             'content' => $request->input('content'),
-            'image' => $filename,
+            'image' => $imagePath,
         ]);
 
         return redirect()->route('posts.index')->with('success', 'Post updated successfully.');

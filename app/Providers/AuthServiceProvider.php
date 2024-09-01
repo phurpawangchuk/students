@@ -12,7 +12,6 @@ use App\Policies\PostPolicy;
 use App\Policies\ProductPolicy;
 use App\Policies\StudentPolicy;
 
-
 class AuthServiceProvider extends ServiceProvider
 {
     /**

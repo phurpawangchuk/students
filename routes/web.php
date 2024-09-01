@@ -3,9 +3,14 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\PostController;
+use App\Livewire\Posts;
 use App\Http\Controllers\PublicController;
 use App\Http\Controllers\StudentController;
+
+
+use App\Livewire\SimpleForm;
+
+Route::get('/forms', SimpleForm::class);
 
 Route::get('/', [PublicController::class, 'welcome'])->name('welcome');
 
@@ -19,13 +24,16 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     
     Route::resource('products', ProductController::class);
-    Route::resource('posts', PostController::class);
+    // Route::resource('posts', PostController::class);
     Route::resource('students', StudentController::class);
 
 });
 
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
-Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
+//Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
+Route::get('/posts', Posts::class);
+
+
 Route::get('/students', [StudentController::class, 'index'])->name('students.index');
 
 require __DIR__.'/auth.php';

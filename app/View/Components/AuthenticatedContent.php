@@ -26,9 +26,4 @@ class AuthenticatedContent extends Component
     {
         return view('components.authenticated-content');
     }
-
-    //  public function isAuthenticated()
-    // {
-    //     return Auth::check();
-    // }
 }

@@ -1,8 +1,4 @@
-@include('layouts.header')
-
 <div class="flex-grow-1 bg-gray-100">
-    @include('layouts.navigation')
-
     <div class="container mt-4">
         <h1 class="mb-4">Post</h1>
         <x-authenticated-content>
@@ -10,6 +6,8 @@
                 <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#createPostModal">
                     <i class="fa fa-plus"></i> Create New Post
                 </button>
+
+
             </div>
         </x-authenticated-content>
         @if ($message = Session::get('success'))
@@ -45,8 +43,6 @@
 
                     <x-authenticated-content>
                         <td>
-                            <a href="{{ route('posts.show', $post) }}" class="btn btn-info btn-sm">Show</a>
-
                             @can('update', $post)
                             <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
                                 data-bs-target="#editPostModal{{ $post->id }}">Edit</button>
@@ -68,11 +64,6 @@
         </table>
     </div>
 
-</div>
+    @include('livewire.posts.create', ['formId' => 'createPostModal'])
 
-<x-authenticated-content>
-    @include('posts.create')
-    @include('posts.edit')
-    @include('posts.delete')
-</x-authenticated-content>
-@include('layouts.footer')
+</div>
